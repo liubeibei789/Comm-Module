@@ -173,9 +173,10 @@ class Comm(object):
                     line = fd.readline()
                 sockTran.close()
         print 'transmit() done'
-        # sockClose = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # sockClose.connect((peerIp, self.peerPort))
-        # sockClose.send('000endMarker')
+
+        sockClose = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sockClose.connect((peerIp, self.peerPort))
+        sockClose.send('dummyendMarker')
     ##################################################################
     # when receiving is done, to close server, type 'q' (for quit)
     # when transmitting is done, to stops client, type 'e' (for exit)
