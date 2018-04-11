@@ -111,9 +111,9 @@ class Comm(object):
 
                 buf = connection.recv(self.recvBufSize)  # the first round is file name
                 bufFileName = buf.split('endMarker')[0]   # file = fileName + 'endMarker' + fileContent
-                # if bufFileName == '000':  # closing signal
-                #     print 'closing signal'
-                #     break
+                if bufFileName == 'dummy':  # closing signal
+                    print 'closing signal'
+                    break
                 print 'received file directory is:' + os.path.join(recvFolderName, bufFileName)
                 fd = open(os.path.join(recvFolderName, bufFileName), 'w')
 
@@ -177,6 +177,8 @@ class Comm(object):
         sockClose = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sockClose.connect((peerIp, self.peerPort))
         sockClose.send('dummyendMarker')
+        sockClose.close()
+        print 'dummy sent'
     ##################################################################
     # when receiving is done, to close server, type 'q' (for quit)
     # when transmitting is done, to stops client, type 'e' (for exit)
@@ -257,10 +259,12 @@ class Comm(object):
             t.start()
 
         ######### blocked here, wait for termination of all threads ###########
-        for t in threads:
-            t.join()
+        # for t in threads:
+        #     t.join()
 
-        # for i in range(numOfPeers):
-        #     threads[i+2].join()
-        # t1.join()
+        for i in range(numOfPeers):
+            threads[i+2].join()
+            print 'join================'
+        t1.join()
+        #print 'join===========-------------==='
 
